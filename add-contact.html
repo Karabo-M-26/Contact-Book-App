@@ -1,0 +1,59 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+    </head>
+    <body>
+        <br/>
+        <form id="editForm">
+            <label for="firstname">First Name</label>
+            <input type="text" name="firstname" id="firstname"><br/>
+            <label for="lastname">Last Name</label>
+            <input type="text" name="lasttname" id="lasttname"><br/>
+            <label for="mobile">Mobile</label>
+            <input type="text" name="mobile" id="mobile"><br/>
+            <label for="email">Email</label>
+            <input type="text" name="email" id="email"><br/>
+            <label for="avatar">Select a file</label>
+            <input type="file" name="avatar" id="avatar"><br/>
+            <button type="submit" id="submitform">Submit</button>
+        </form>
+        <br/>
+        <button id="homelink" type="button">Home</button>
+
+        <script src="config.js"></script>
+        <script>
+            document.getElementById("submitform").addEventListener('click', submitform);
+            document.getElementById("homelink").addEventListener('click', homeLink);
+
+            function sumbimForm(e){
+                e.preventDefault();
+
+                const form= new FormData(document.querySelector('#editForm'));
+                form.append('apiKey', apiKey);
+
+                fetch(rootPath + 'controller/insert-contact/', {
+                    method: 'POST',
+                    headers:{'Accept': 'application/json, *.*'},
+                    body: form
+                })
+                .then(function(response){
+                    return response.text();
+                })
+                .then(function(data){
+                    if(data == "1"){
+                        alert("Contact added.");
+                        homelink();
+                    }else{
+                        alert(data);
+                        homelink();
+                    }
+                })
+            }
+
+            function homeLink(){
+                window.open("index.html","_self");
+            }
+        </script>
+    </body>
+</html>
